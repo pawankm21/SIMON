@@ -3,7 +3,7 @@ colors = ["red", "blue", "yellow", "green"];
 index = 0;
 pattern = [];
 
-function change_button(color) {
+function change_button(color="wrong") {
   //load and play sound on click
   try {
     var sound = new Audio(`sounds/${color}.mp3`);
@@ -15,12 +15,10 @@ function change_button(color) {
       $("#" + color).removeClass("pressed");
     }, 50);
   } catch (err) {
-     var sound = new Audio("sounds/wrong.mp3");
+    var sound = new Audio("sounds/wrong.mp3");
     sound.play();
     $("body").css("background-color", "red");
-    
   }
-  
 }
 
 function wrong_answer() {
@@ -65,25 +63,27 @@ function check_pattern(event) {
 
 // press any key to start Game
 $(document).keypress(function () {
-  level_counter = 1;
-  pattern = create_new_pattern();
-  change_pattern(pattern);
+  setTimeout(function () {
+      level_counter = 1;
+      pattern = create_new_pattern();
+      change_pattern(pattern);
+  }, 1000);
+
 });
 
 //check button presses
 $(".btn").click(function (event) {
-  if (index < level_counter)
-  {
+  
+  if (index < level_counter) {
     check_pattern(event);
   }
-  setTimeout(function () {
-    if (index === level_counter) {
-      level_counter++;
-      index = 0;
-      pattern = create_new_pattern();
-      change_pattern();
-    }
-  }, 1000);
- 
-  
+  if (index === level_counter) {
+     setTimeout(function () {
+       level_counter++;
+       index = 0;
+       pattern = create_new_pattern();
+       change_pattern();
+     }, 1000);
+  }
+   
 });
